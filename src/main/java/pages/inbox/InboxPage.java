@@ -1,6 +1,5 @@
 package pages.inbox;
 
-import common.CommonAction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
@@ -11,6 +10,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 import pages.base.BasePage;
 import services.TestDataReader;
+import utils.Utils;
 
 public class InboxPage extends BasePage {
     public static final String SUBJECT = "testdata.subject";
@@ -49,10 +49,10 @@ public class InboxPage extends BasePage {
         return driver.findElement(composeButton);
     }
 
-    public InboxPage saveEmailToDraft() {
+    public void saveEmailToDraft() {
         waitForElement(driver.findElement(dialog));
         Actions actions = new Actions(driver);
-        String recipient = CommonAction.randomStringCreator();
+        String recipient = Utils.randomStringCreator();
         actions.sendKeys(recipient).perform();
         actions.sendKeys(Keys.TAB).perform();
         actions.sendKeys(TestDataReader.getTestData(SUBJECT)).perform();
@@ -60,34 +60,30 @@ public class InboxPage extends BasePage {
         actions.sendKeys(TestDataReader.getTestData(BODY)).perform();
         actions.sendKeys(Keys.ESCAPE).perform();
         logger.info("Email to " + recipient + " is saved to draft");
-        return this;
     }
 
-    public InboxPage navigateToDrafts() {
+    public void navigateToDrafts() {
         driver.findElement(draft).click();
         waitForElement(elementExists());
         logger.info("User is navigated to drafts");
-        return this;
     }
 
-    public InboxPage navigateToSent() {
+    public void navigateToSent() {
         driver.findElement(sent).click();
         waitForElement(elementExists());
         logger.info("User is navigated to sent messages");
-        return this;
     }
 
     public WebElement elementExists() {
         return driver.findElement(draftElement);
     }
 
-    public InboxPage openAndSendDraft() {
+    public void openAndSendDraft() {
         driver.findElement(draftElement).click();
         waitForElement(driver.findElement(dialog));
         Actions actions = new Actions(driver);
         actions.keyDown(Keys.CONTROL).sendKeys(Keys.ENTER).keyUp(Keys.CONTROL).perform();
         logger.info("Email is sent");
-        return this;
     }
 
     public WebElement noDraftsMessage() {

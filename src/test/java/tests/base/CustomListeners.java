@@ -4,10 +4,8 @@ import common.CommonAction;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.message.LocalizedMessage;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
@@ -37,7 +35,7 @@ public class CustomListeners implements ITestListener {
     }
 
     public void takeScreenshot(String methodName) {
-        File srcFile = ((TakesScreenshot) CommonAction.createDriver()).getScreenshotAs(OutputType.FILE);
+        File srcFile = ((TakesScreenshot) CommonAction.getDriver()).getScreenshotAs(OutputType.FILE);
         try {
             FileUtils.copyFile(srcFile, new File(FILE_PATH + methodName + ".jpg"));
         } catch (IOException e) {

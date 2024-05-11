@@ -4,12 +4,7 @@ import common.CommonAction;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.testng.ITestContext;
 import org.testng.annotations.*;
-import pages.base.BasePage;
-import pages.inbox.InboxPage;
-import pages.login.LoginPage;
-
 import java.util.Set;
 
 public class BaseTest {
@@ -44,7 +39,7 @@ public class BaseTest {
 
     @BeforeClass
     public void setUp() {
-        driver = CommonAction.createDriver();
+        driver = CommonAction.getDriver();
     }
 
     @AfterClass
