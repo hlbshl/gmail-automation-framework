@@ -1,22 +1,23 @@
 package driver;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DriverFactory {
+    private static final Map<String, DriverSetup> DRIVERS = new HashMap<>();
+
+    static {
+        DRIVERS.put("chrome", new ChromeDriverSetup());
+        DRIVERS.put("firefox", new FirefoxDriverSetup());
+    }
+
     public static WebDriver createDriver(String browser) {
-        return switch (browser) {
-            case "chrome" -> {
-                WebDriverManager.chromedriver().setup();
-                yield new ChromeDriver();
-            }
-            case "firefox" -> {
-                WebDriverManager.firefoxdriver().setup();
-                yield new FirefoxDriver();
-            }
-            default -> throw new IllegalArgumentException("Invalid browser: " + browser);
-        };
+        DriverSetup setup = DRIVERS.get(browser);
+        if (setup == null) {
+            throw new IllegalArgumentException("Invalid browser: " + browser);
+        }
+        return setup.getWebDriver();
     }
 }

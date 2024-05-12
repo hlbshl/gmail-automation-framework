@@ -1,7 +1,5 @@
 package pages.inbox;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -9,14 +7,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 import pages.base.BasePage;
-import services.TestDataReader;
-import utils.Utils;
+import utils.LoggerUtil;
+import utils.RandomStringGenerator;
+import utils.TestDataReader;
 
 public class InboxPage extends BasePage {
     public static final String SUBJECT = "testdata.subject";
     public static final String BODY = "testdata.body";
-
-    private final Logger logger = LogManager.getRootLogger();
 
     public InboxPage(WebDriver driver) {
         super(driver);
@@ -34,14 +31,14 @@ public class InboxPage extends BasePage {
     @Override
     public InboxPage openPage() {
         driver.get("https://mail.google.com/mail/?logout&hl=en");
-        logger.info("Login page opened");
+        LoggerUtil.logInfo("Login page opened");
         return this;
     }
 
     public WebElement loginSuccessful() {
         WebElement inbox = driver.findElement(searchInput);
         waitForElement(inbox);
-        logger.info("User is logged in");
+        LoggerUtil.logInfo("User is logged in");
         return inbox;
     }
 
@@ -52,26 +49,26 @@ public class InboxPage extends BasePage {
     public void saveEmailToDraft() {
         waitForElement(driver.findElement(dialog));
         Actions actions = new Actions(driver);
-        String recipient = Utils.randomStringCreator();
+        String recipient = RandomStringGenerator.randomStringCreator();
         actions.sendKeys(recipient).perform();
         actions.sendKeys(Keys.TAB).perform();
         actions.sendKeys(TestDataReader.getTestData(SUBJECT)).perform();
         actions.sendKeys(Keys.TAB).perform();
         actions.sendKeys(TestDataReader.getTestData(BODY)).perform();
         actions.sendKeys(Keys.ESCAPE).perform();
-        logger.info("Email to " + recipient + " is saved to draft");
+        LoggerUtil.logInfo("Email to " + recipient + " is saved to draft");
     }
 
     public void navigateToDrafts() {
         driver.findElement(draft).click();
         waitForElement(elementExists());
-        logger.info("User is navigated to drafts");
+        LoggerUtil.logInfo("User is navigated to drafts");
     }
 
     public void navigateToSent() {
         driver.findElement(sent).click();
         waitForElement(elementExists());
-        logger.info("User is navigated to sent messages");
+        LoggerUtil.logInfo("User is navigated to sent messages");
     }
 
     public WebElement elementExists() {
@@ -83,7 +80,7 @@ public class InboxPage extends BasePage {
         waitForElement(driver.findElement(dialog));
         Actions actions = new Actions(driver);
         actions.keyDown(Keys.CONTROL).sendKeys(Keys.ENTER).keyUp(Keys.CONTROL).perform();
-        logger.info("Email is sent");
+        LoggerUtil.logInfo("Email is sent");
     }
 
     public WebElement noDraftsMessage() {
