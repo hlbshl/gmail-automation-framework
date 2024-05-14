@@ -15,6 +15,7 @@ public class ScreenshotTaker {
         File srcFile = ((TakesScreenshot) CommonAction.getDriver()).getScreenshotAs(OutputType.FILE);
         try {
             FileUtils.copyFile(srcFile, new File(FILE_PATH + methodName + ".jpg"));
+            LoggerUtil.logWithFile(srcFile, "Screenshot at failure");
         } catch (IOException e) {
             LoggerUtil.logError("Failed to take a screenshot: " + e.getLocalizedMessage());
         }
